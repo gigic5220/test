@@ -73,16 +73,16 @@ export default {
       if (depth < this.selectList.length - 1) {
         this.selectList[depth + 1].options = this.selectList[depth + 1].options.map((f, index) => {
           // 추려낸 재고배열을 선택한 옵션의 하위 옵션 별로 필터링
-          const targetObj = remainCountList.filter((x) => {
+          const targetObjList = remainCountList.filter((x) => {
             return x.combination.filter(c => selectedOptList.includes(c)).length === selectedOptList.length && f.value === x.combination[depth + 1];
           });
           // 필터링된 옵션의 재고수를 모두 더해서 품절여부를 파악
-          const cnt = targetObj.map(x => x.remainCount).reduce((arr, cur) => {
+          const cnt = targetObjList.map(x => x.remainCount).reduce((arr, cur) => {
             return arr + cur;
           });
           return {
-            label: targetObj[0].combination[depth + 1] + (depth === this.selectList.length - 2 ? ' (' + cnt + '개 구매가능)' : (cnt !== null && cnt < 1 ? ' (품절)' : '')),
-            value: targetObj[0].combination[depth + 1],
+            label: targetObjList[0].combination[depth + 1] + (depth === this.selectList.length - 2 ? ' (' + cnt + '개 구매가능)' : (cnt !== null && cnt < 1 ? ' (품절)' : '')),
+            value: targetObjList[0].combination[depth + 1],
             remainCount: cnt
           };
         });
@@ -139,6 +139,8 @@ export default {
 
       this.$axios.get('https://apigen-server.herokuapp.com/api/62419aa64139ba24abb709e8')
         .then((res) => {
+          console.log(res.data.data.groupList.push)
+          console.log(res.data.data.countList)
           this.setData(res.data.data.groupList, res.data.data.countList);
         });
     }
