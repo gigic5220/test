@@ -15,21 +15,24 @@
 
     <br>
 
-    <select v-for="(pItem, index) in selectList"
-            :key="pItem.title"
-            :disabled="index !== 0 && !selectList[index-1].selectedValue"
-            @change="changeOption(index)"
-            v-model="pItem.selectedValue"
+    <select
+      v-for="(pItem, index) in selectList"
+      :key="pItem.title"
+      v-model="pItem.selectedValue"
+      :disabled="index !== 0 && !selectList[index-1].selectedValue"
+      @change="changeOption(index)"
     >
-      <option value=""
-              disabled=true
+      <option
+        value=""
+        disabled="true"
       >
         {{ pItem.title }}
       </option>
-      <option v-for="cItem in pItem.options"
-              :key="cItem.value"
-              :value="cItem.value"
-              :disabled="cItem.remainCount && cItem.remainCount < 1"
+      <option
+        v-for="cItem in pItem.options"
+        :key="cItem.value"
+        :value="cItem.value"
+        :disabled="cItem.remainCount && cItem.remainCount < 1"
       >
         {{ cItem.label }}
       </option>
@@ -44,7 +47,7 @@
 </template>
 <script>
 export default {
-  name: 'testComponent',
+  name: 'TestComponent',
   components: {},
   data: () => ({
     selectList: [],
