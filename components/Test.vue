@@ -139,8 +139,6 @@ export default {
 
       this.$axios.get('https://apigen-server.herokuapp.com/api/62419aa64139ba24abb709e8')
         .then((res) => {
-          console.log(res.data.data.groupList.push)
-          console.log(res.data.data.countList)
           this.setData(res.data.data.groupList, res.data.data.countList);
         });
     }
