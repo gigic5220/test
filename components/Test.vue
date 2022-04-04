@@ -84,13 +84,13 @@ export default {
             return arr + cur;
           });
           return {
-            label: targetObjList[0].combination[depth + 1] + (depth === this.selectList.length - 2 ? ' (' + cnt + '개 구매가능)' : (cnt !== null && cnt < 1 ? ' (품절)' : '')),
+            label: targetObjList[0].combination[depth + 1] + (depth === this.selectList.length - 2 ? (cnt === 0 ? ' (품절)' : ' (' + cnt + '개 구매가능)') : (cnt !== null && cnt < 1 ? ' (품절)' : '')),
             value: targetObjList[0].combination[depth + 1],
             remainCount: cnt
           };
         });
         // 마지막 옵션 선택 시 결과 출력하기
-      } else {
+      } else{
         this.result = this.selectList.reduce((acc, cur, index) => {
           return acc + cur.selectedValue + (index === this.selectList.length - 1 ? '' : ' / ');
         }, '');
