@@ -71,14 +71,17 @@ export default {
 
       // 재고 배열에서 선택한 옵션 포함하는 배열 찾기
       const remainCountList = this.countList.filter(f => f.combination.filter(c => selectedOptList.includes(c)).length === selectedOptList.length);
-
+      console.log('remainCountList', remainCountList);
       // 옵션 선택 시 하위 옵션에 재고정보 추가
       if (depth < this.selectList.length - 1) {
         this.selectList[depth + 1].options = this.selectList[depth + 1].options.map((f, index) => {
+          // 결국 필요했던 건 현재 반복을 돌고 있는 하위옵션 값 f를 가지고 있는 countList의 객체들
+          const targetObjList = remainCountList.filter(x => x.combination[depth + 1] === f.value);
           // 추려낸 재고배열을 선택한 옵션의 하위 옵션 별로 필터링
-          const targetObjList = remainCountList.filter((x) => {
-            return x.combination.filter(c => selectedOptList.includes(c)).length === selectedOptList.length && f.value === x.combination[depth + 1];
-          });
+          // const targetObjList = remainCountList.filter((x) => {
+          // return x.combination.filter(c => selectedOptList.includes(c)).length === selectedOptList.length && f.value === x.combination[depth + 1];
+          // });
+          console.log('targetObjList', targetObjList);
           // 필터링된 옵션의 재고수를 모두 더해서 품절여부를 파악
           const cnt = targetObjList.map(x => x.remainCount).reduce((arr, cur) => {
             return arr + cur;
@@ -90,11 +93,12 @@ export default {
           };
         });
         // 마지막 옵션 선택 시 결과 출력하기
-      } else{
+      } else {
         this.result = this.selectList.reduce((acc, cur, index) => {
           return acc + cur.selectedValue + (index === this.selectList.length - 1 ? '' : ' / ');
         }, '');
-      };
+      }
+      ;
     },
     setData(groupListData, countListData) {
       const selectList = groupListData.map((f, index) => {
@@ -114,7 +118,8 @@ export default {
               ).reduce((arr, cur) => {
                 return arr + cur;
               });
-            };
+            }
+            ;
             return {
               label: c + (cnt !== null && cnt < 1 ? ' (품절)' : ''),
               value: c,
@@ -142,7 +147,192 @@ export default {
 
       this.$axios.get('https://apigen-server.herokuapp.com/api/62419aa64139ba24abb709e8')
         .then((res) => {
-          this.setData(res.data.data.groupList, res.data.data.countList);
+          const data = {
+            countList: [
+              {
+                combination: [
+                  '오랑우탄',
+                  '아보카도',
+                  '선물 포장',
+                  '내일'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '오랑우탄',
+                  '아보카도',
+                  '포장 안함',
+                  '내일'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '오랑우탄',
+                  '아보카도',
+                  '선물 포장',
+                  '모레'
+                ],
+                remainCount: 1
+              },
+              {
+                combination: [
+                  '오랑우탄',
+                  '아보카도',
+                  '포장 안함',
+                  '모레'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '오랑우탄',
+                  '사과',
+                  '선물 포장',
+                  '내일'
+                ],
+                remainCount: 1
+              },
+              {
+                combination: [
+                  '오랑우탄',
+                  '사과',
+                  '포장 안함',
+                  '내일'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '오랑우탄',
+                  '사과',
+                  '선물 포장',
+                  '모레'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '오랑우탄',
+                  '사과',
+                  '포장 안함',
+                  '모레'
+                ],
+                remainCount: 1
+              },
+              {
+                combination: [
+                  '얼룩말',
+                  '아보카도',
+                  '선물 포장',
+                  '내일'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '얼룩말',
+                  '아보카도',
+                  '포장 안함',
+                  '내일'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '얼룩말',
+                  '아보카도',
+                  '선물 포장',
+                  '모레'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '얼룩말',
+                  '아보카도',
+                  '포장 안함',
+                  '모레'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '얼룩말',
+                  '사과',
+                  '선물 포장',
+                  '내일'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '얼룩말',
+                  '사과',
+                  '포장 안함',
+                  '내일'
+                ],
+                remainCount: 5
+              },
+              {
+                combination: [
+                  '얼룩말',
+                  '사과',
+                  '선물 포장',
+                  '모레'
+                ],
+                remainCount: 0
+              },
+              {
+                combination: [
+                  '얼룩말',
+                  '사과',
+                  '포장 안함',
+                  '모레'
+                ],
+                remainCount: 5
+              }
+            ],
+            titleList: [
+              '동물 선택',
+              '과일 선택',
+              '포장 선택',
+              '발송 날짜'
+            ],
+            groupList: [
+              {
+                title: '동물 선택',
+                options: [
+                  '오랑우탄',
+                  '얼룩말'
+                ]
+              },
+              {
+                title: '과일 선택',
+                options: [
+                  '아보카도',
+                  '사과'
+                ]
+              },
+              {
+                title: '포장 선택',
+                options: [
+                  '선물 포장',
+                  '포장 안함'
+                ]
+              },
+              {
+                title: '발송 날짜',
+                options: [
+                  '내일',
+                  '모레'
+                ]
+              }
+            ]
+          };
+          // this.setData(res.data.data.groupList, res.data.data.countList);
+          this.setData(data.groupList, data.countList);
         });
     }
   }
