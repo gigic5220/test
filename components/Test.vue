@@ -76,6 +76,8 @@ export default {
       if (depth < this.selectList.length - 1) {
         this.selectList[depth + 1].options = this.selectList[depth + 1].options.map((f) => {
           // 결국 필요했던 건 현재 반복을 돌고 있는 하위옵션 값 f를 가지고 있는 countList의 객체들
+          // 이미 remainCountList에서 선택한 옵션의 배열로 필터링 하기 때문에 필요없는 필터링조건 -> x.combination.filter(c => selectedOptList.includes(c)).length === selectedOptList.length
+          // 필터링 조건이 중복
           const targetObjList = remainCountList.filter(x => x.combination[depth + 1] === f.value);
           // 추려낸 재고배열을 선택한 옵션의 하위 옵션 별로 필터링
           // const targetObjList = remainCountList.filter((x) => {
